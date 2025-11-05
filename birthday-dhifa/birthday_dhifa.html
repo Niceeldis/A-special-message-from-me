@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday Dhifa 💖</title>
+<style>
+  /* ========== Global styles ========== */
+  :root{
+    --pink:#ffd7e6;
+    --soft-pink:#ffb6d0;
+    --white:#ffffff;
+    --pastel:#f7f3ff;
+    --card-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    --max-width:1100px;
+    --radius:16px;
+    font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#fff 0%, #fff0 50%), #fff;}
+  /* Center container */
+  .wrap{
+    max-width:var(--max-width);
+    margin:28px auto;
+    padding:20px;
+  }
+
+  /* Welcoming overlay (full-screen on load) */
+  .welcome {
+    position:fixed;inset:0;
+    background: radial-gradient(circle at 20% 20%, rgba(255,223,235,0.95), rgba(255,244,250,0.9));
+    display:flex;align-items:center;justify-content:center;z-index:50;
+    flex-direction:column;gap:18px;
+  }
+  .welcome .title{
+    font-size:clamp(20px,5vw,44px);
+    color:#ff6fa8;
+    letter-spacing:1px;
+    text-align:center;
+    font-weight:700;
+    text-shadow: 0 6px 18px rgba(255,105,150,0.12);
+  }
+  .typing{
+    font-size:clamp(14px,2.6vw,18px);
+    color:#6b2b4a;
+    opacity:0.95;
+  }
+  .open-btn{
+    margin-top:8px;
+    background:linear-gradient(180deg,var(--soft-pink), #ff93c0);
+    color:var(--white);
+    border:0;padding:12px 20px;border-radius:999px;
+    font-weight:600;cursor:pointer;box-shadow:var(--card-shadow);
+    transition:transform .18s ease;
+  }
+  .open-btn:active{transform:translateY(2px) scale(.995);}
+
+  /* Page main card */
+  .card{
+    background: linear-gradient(180deg,var(--pink), #fff);
+    border-radius:18px;
+    box-shadow:var(--card-shadow);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    overflow:hidden;
+  }
+
+  /* Left: message */
+  .left{
+    padding:34px;
+    min-height:520px;
+    display:flex;flex-direction:column;gap:16px;
+    align-items:flex-start;justify-content:center;
+  }
+  .left h1{
+    margin:0;font-size:clamp(20px,4.6vw,34px);color:#8b0f4d;
+    letter-spacing:1px;
+  }
+  .message{
+    background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    padding:16px;border-radius:12px;max-height:300px;overflow:auto;
+    box-shadow:0 8px 20px rgba(139,15,77,0.06);
+    border:1px solid rgba(255,255,255,0.4);
+  }
+  /* message paragraphs fade-in */
+  .message p{
+    margin:0 0 10px 0;line-height:1.5;color:#3b0d2e;
+    opacity:0;transform:translateY(8px);transition:all .6s cubic-bezier(.2,.9,.3,1);
+  }
+  .message p.show{opacity:1;transform:none;}
+
+  /* Floating hearts background */
+  .hearts{
+    position:absolute;inset:auto 0 0 0;height:100px;pointer-events:none;
+  }
+  .heart{
+    position:absolute;width:18px;height:18px;background:radial-gradient(circle at 30% 30%, #fff, #ffddef);
+    transform:rotate(45deg);border-radius:4px;opacity:.9;
+    animation:floatUp linear infinite;
+    box-shadow:0 2px 8px rgba(139,15,77,0.08);
+  }
+  @keyframes floatUp{
+    from{transform:translateY(0) rotate(45deg) scale(.9);opacity:0.9}
+    to{transform:translateY(-220px) rotate(45deg) scale(1.05);opacity:0.02}
+  }
+
+  /* Right: photos */
+  .right{
+    padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;
+    align-content:start;justify-items:center;background:
+    linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  }
+  .photo{
+    width:100%;height:220px;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    border:3px solid rgba(255,255,255,0.45);background:#fff;
+    cursor:pointer;position:relative;
+  }
+  .photo img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.02) saturate(1.05);}
+  .photo .badge{
+    position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,0.85);
+    padding:6px 10px;border-radius:999px;font-weight:600;font-size:12px;color:#8b0f4d;
+    box-shadow:0 4px 18px rgba(139,15,77,0.06);
+  }
+
+  /* Surprise & controls */
+  .controls{display:flex;gap:10px;align-items:center;margin-top:8px;}
+  .btn{
+    border:0;padding:10px 14px;border-radius:12px;background:#fff;font-weight:700;cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  /* Lightbox for photo view */
+  .lightbox{
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;
+    z-index:80;padding:20px;
+  }
+  .lightbox .box{width:clamp(300px,80vw,900px);background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+  .lightbox img{width:100%;height:70vh;object-fit:contain;background:#fff;}
+
+  /* Responsive */
+  @media(max-width:880px){
+    .card{grid-template-columns:1fr;gap:16px;}
+    .right{grid-template-columns:1fr 1fr; padding:12px;}
+    .left{padding:18px;}
+  }
+  @media(max-width:520px){
+    .photo{height:140px}
+    .message{max-height:220px}
+  }
+
+  /* confetti simple */
+  .confetti{
+    position:fixed;inset:0;pointer-events:none;z-index:120;display:none;
+  }
+
+  /* small footer */
+  .foot{font-size:12px;color:#6b2b4a;margin-top:12px;opacity:0.9}
+</style>
+</head>
+<body>
+<div class="welcome" id="welcome">
+  <!-- Welcoming scene shown on page load -->
+  <div class="title" id="welcomeTitle">Happy Birthday Dhifa 💕</div>
+  <div class="typing" id="typeText">Klik tombol di bawah untuk buka surprise special buat kamu...</div>
+  <button class="open-btn" id="openBtn">Click to open your surprise 🎁</button>
+</div>
+
+<div class="wrap">
+  <!-- Main card containing left (message) and right (photos) -->
+  <div class="card" id="mainCard" style="position:relative;">
+    <!-- Left column: message & interactive controls -->
+    <div class="left">
+      <h1>For: <span style="color:#ff2d8b">Dhifa</span> — with love 💗</h1>
+
+      <!-- Message box: paragraphs appear one by one -->
+      <div class="message" id="messageBox" aria-live="polite">
+        <!-- Paragraphs will be injected by JS for fade-in effect -->
+      </div>
+
+      <!-- Controls: play/pause text reveal, open surprise again -->
+      <div class="controls">
+        <button class="btn" id="replayBtn">Replay Message</button>
+        <button class="btn" id="musicBtn">🔈 Music: Off</button>
+      </div>
+
+      <div class="foot">Tip: klik foto untuk memperbesar • Responsif di HP & Laptop</div>
+    </div>
+
+    <!-- Right column: 4 photos -->
+    <div class="right" id="photosGrid">
+      <!-- Each .photo uses an image from your uploads (paths match file names in /mnt/data) -->
+      <div class="photo" data-index="0" title="Foto 1">
+        <img src="/mnt/data/WhatsApp Image 2025-11-05 at 14.51.42_911c5d8c.jpg" alt="Foto 1">
+        <div class="badge">Memori 1</div>
+      </div>
+      <div class="photo" data-index="1" title="Foto 2">
+        <img src="/mnt/data/WhatsApp Image 2025-11-05 at 14.51.43_325d1fe4.jpg" alt="Foto 2">
+        <div class="badge">Memori 2</div>
+      </div>
+      <div class="photo" data-index="2" title="Foto 3">
+        <img src="/mnt/data/WhatsApp Image 2025-11-05 at 14.51.42_9a82c38c.jpg" alt="Foto 3">
+        <div class="badge">Memori 3</div>
+      </div>
+      <div class="photo" data-index="3" title="Foto 4">
+        <img src="/mnt/data/WhatsApp Image 2025-11-05 at 14.51.42_9b4c56d1.jpg" alt="Foto 4">
+        <div class="badge">Memori 4</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox for enlarged photo -->
+<div class="lightbox" id="lightbox" role="dialog" aria-hidden="true">
+  <div class="box">
+    <img src="" alt="Enlarged photo" id="lightboxImg">
+  </div>
+</div>
+
+<!-- confetti container -->
+<canvas id="confetti" class="confetti"></canvas>
+
+<!-- ========== Script ========== -->
+<script>
+/* ===========================
+   Data: message paragraphs
+   =========================== */
+const paragraphs = [
+`HAPPY BIRTHDAY DHIFAAAA 🎉🥳💖, cie nyusul aku juga umurnya wkwkwkwk 🤏.`,
+`Dhifaaa makasi yaaa sudah bersama aku selama inii, semoga Dhifa dilindungi Allah, jalannya dipermudah, diterima di FEB UI 2027 🩶🩶🩶. Semoga Dhifa panjang umur dan sehat selalu, semoga Dhifa bisa sukses dan kaya dimasa depan, hidup dengan aman, tenang, dan damai. Semoga Dhifa jadi anak yang baikk, ramah, lembut, dan dermawan.`,
+`I love you soo much Dhifaa, I really really realllyyyyy love youuuu ♥️. Aku bersyukur banget bisa kenal sama kamu, meeting you was the best thing that happened to me. Aku bakal selalu ada di sisi kamu Dhifaa ♥️, Lingga bakal selalu support Dhifa, bakal selalu ada di sisi Dhifa setiap saat ♥️, bakal selalu comfort Dhifa kalau Dhifa lagi ngerasa sedihh, Lingga bakal comfort kamu sampai kamu bahagia lagii 🫂🫂🫂.`,
+`I pray that our teenage love turns us into getting married in 2034. Kita sukses bersama yaa dimasa depan. Kita menikah dengan versi kita yang terbaik, yang sudah siap atas segalanya ♥️. I hope I become your future husband and the father of our children, and you become my future wife and the mother of our children.`,
+`Always remember sayang, you have me all the time. I always love you everydayy everynightt. More than yesterday and less than tomorrow, I will always love you forever. I will always love you even during our toughest time.`,
+`Thank you soo muchh Dhifaa ♥️ terimakasii sudah selalu ada untuk aku, sudah selalu menamiku, menenangkanku, jadi teman yang baikk dan perhatian, I really love you ♥️`,
+`Lastly, enjoy your 16 cantikkuu ♥️, kita twinss sekarang umur kita samaan WKWKWKWK 🤏. You will always be my cutest, prettiest, sweetest, kindness girl in the world. KEEP SPREADING KINDNESS BABYYY, SENDING YOU LOTS OF LOVE ON YOUR SPECIAL DAYY 💗💗💗💗💗`,
+`I hope our journey keep continue until we’re get married ♥️♥️🫂🫂`
+];
+
+/* ===========================
+   Helpful DOM refs
+   =========================== */
+const welcome = document.getElementById('welcome');
+const openBtn = document.getElementById('openBtn');
+const messageBox = document.getElementById('messageBox');
+const replayBtn = document.getElementById('replayBtn');
+const musicBtn = document.getElementById('musicBtn');
+const photos = document.querySelectorAll('.photo');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const confettiCanvas = document.getElementById('confetti');
+
+/* ===========================
+   Audio (optional) - small beep / soft music
+   If you want to change the music, replace the data URI or set to an external file.
+   =========================== */
+let audio = new Audio();
+audio.src = ""; // intentionally empty; user can set a file path or URL if desired
+let musicOn = false;
+
+/* ===========================
+   Typing effect on welcome title
+   =========================== */
+const typeText = document.getElementById('typeText');
+let typingIndex = 0;
+const welcomeMsg = "Klik tombol di bawah untuk buka surprise special buat kamu...";
+function startTyping(){
+  typingIndex = 0;
+  typeText.textContent = "";
+  const speed = 30;
+  let t = setInterval(()=>{
+    typeText.textContent += welcomeMsg[typingIndex] || "";
+    typingIndex++;
+    if(typingIndex >= welcomeMsg.length){ clearInterval(t); }
+  }, speed);
+}
+startTyping();
+
+/* ===========================
+   Show message paragraphs one-by-one
+   =========================== */
+function showMessageSequence(){
+  // clear first
+  messageBox.innerHTML = "";
+  paragraphs.forEach((p, i) => {
+    const el = document.createElement('p');
+    el.innerText = p;
+    messageBox.appendChild(el);
+    // staggered reveal
+    setTimeout(()=> el.classList.add('show'), 600 + i * 700);
+  });
+}
+
+/* ===========================
+   Heart floating generator (visual only)
+   =========================== */
+function spawnHearts(){
+  // create some hearts that float up
+  const container = document.createElement('div');
+  container.className = 'hearts';
+  document.getElementById('mainCard').appendChild(container);
+  for(let i=0;i<10;i++){
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.style.left = Math.random()*92 + '%';
+    h.style.bottom = (Math.random()*10) + 'px';
+    h.style.width = (8 + Math.random()*22) + 'px';
+    h.style.height = h.style.width;
+    h.style.animationDuration = (5 + Math.random()*6) + 's';
+    container.appendChild(h);
+    // remove later
+    setTimeout(()=> h.remove(), 11000);
+  }
+}
+
+/* ===========================
+   Confetti simple implementation
+   =========================== */
+function runConfetti(){
+  const ctx = confettiCanvas.getContext('2d');
+  const W = confettiCanvas.width = window.innerWidth;
+  const H = confettiCanvas.height = window.innerHeight;
+  confettiCanvas.style.display = 'block';
+  const pieces = [];
+  for(let i=0;i<120;i++){
+    pieces.push({
+      x: Math.random()*W, y: -Math.random()*H,
+      w: 6+Math.random()*8, h: 6+Math.random()*8,
+      vx: -2+Math.random()*4, vy: 2+Math.random()*5,
+      color: ['#ff4da6','#ffd3e7','#fff7b2','#c2ffd9'][Math.floor(Math.random()*4)]
+    });
+  }
+  let t=0;
+  function loop(){
+    t++;
+    ctx.clearRect(0,0,W,H);
+    pieces.forEach((p)=>{
+      p.x += p.vx; p.y += p.vy; p.vy += 0.04;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x,p.y,p.w,p.h);
+    });
+    if(t<200) requestAnimationFrame(loop);
+    else { confettiCanvas.style.display='none'; ctx.clearRect(0,0,W,H); }
+  }
+  loop();
+}
+
+/* ===========================
+   Button behaviors
+   =========================== */
+openBtn.addEventListener('click', ()=>{
+  // small entrance animation for welcome
+  welcome.style.transition = 'opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1)';
+  welcome.style.opacity = 0;
+  welcome.style.transform = 'scale(.98) translateY(-12px)';
+  setTimeout(()=> welcome.style.display = 'none', 620);
+
+  // show content: hearts, message, confetti, etc.
+  setTimeout(()=> {
+    spawnHearts();
+    runConfetti();
+    showMessageSequence();
+    // small sparkle on badges
+    document.querySelectorAll('.badge').forEach( b => {
+      b.animate([{transform:'translateY(6px) scale(.96)'},{transform:'translateY(0px) scale(1)'}],{duration:900,iterations:1,easing:'cubic-bezier(.2,.9,.3,1)'});
+    });
+  }, 300);
+});
+
+/* replay message */
+replayBtn.addEventListener('click', ()=>{
+  spawnHearts();
+  showMessageSequence();
+  runConfetti();
+});
+
+/* music toggle (no default sound included) */
+musicBtn.addEventListener('click', ()=>{
+  musicOn = !musicOn;
+  if(musicOn){
+    musicBtn.innerText = '🔊 Music: On';
+    if(audio.src) audio.play().catch(()=>{});
+  } else {
+    musicBtn.innerText = '🔈 Music: Off';
+    audio.pause();
+  }
+});
+
+/* ===========================
+   Photo lightbox interactions
+   =========================== */
+photos.forEach(node=>{
+  node.addEventListener('click', ()=>{
+    const img = node.querySelector('img');
+    lightboxImg.src = img.src;
+    lightbox.style.display = 'flex';
+    lightbox.setAttribute('aria-hidden','false');
+  });
+});
+lightbox.addEventListener('click', (e)=>{
+  if(e.target === lightbox || e.target === lightboxImg){
+    lightbox.style.display = 'none';
+    lightbox.setAttribute('aria-hidden','true');
+    lightboxImg.src = '';
+  }
+});
+
+/* Close welcome by pressing Enter or Space for accessibility */
+document.addEventListener('keydown', (e)=>{
+  if((e.key === 'Enter' || e.key === ' ' ) && welcome.style.display !== 'none'){
+    openBtn.click();
+  }
+});
+
+/* Resize confetti canvas */
+window.addEventListener('resize', ()=>{
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+});
+
+/* Accessibility: allow tapping images on mobile - already handled by click events */
+
+/* Initially hide message until opened */
+messageBox.innerHTML = "<p style='opacity:.9;font-weight:700;color:#8b0f4d'>Klik \"Click to open your surprise 🎁\" untuk melihat ucapannya yaa 💗</p>";
+
+</script>
+</body>
+</html>
